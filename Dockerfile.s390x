@@ -1,14 +1,14 @@
-FROM debian:stable-slim AS dnsmasq-builder
+FROM debian:9.8-slim AS dnsmasq-builder
 
 RUN dpkg --add-architecture s390x \
  && apt-get update \
  && apt-get -y install git make libc6-dev:s390x gcc-s390x-linux-gnu \
- && git clone -b master git://thekelleys.org.uk/dnsmasq.git /dnsmasq \
+ && git clone -b v2.78 git://thekelleys.org.uk/dnsmasq.git /dnsmasq \
  && cd /dnsmasq/ \
  && CC=s390x-linux-gnu-gcc make install \
  && cp /dnsmasq/dnsmasq.conf.example /etc/dnsmasq.conf
 
-FROM busybox:glibc AS user-builder
+FROM busybox:1.30-glibc AS user-builder
 
 RUN addgroup -g 200 -S dnsmasq \
  && adduser -G dnsmasq -s /bin/false -S -D -H -u 200 dnsmasq \
@@ -17,7 +17,7 @@ RUN addgroup -g 200 -S dnsmasq \
  && mkdir -p /var/lib/misc/ \
  && mkdir -p /var/ftpd/
 
-FROM s390x/busybox:glibc
+FROM s390x/busybox:1.30-glibc
 
 COPY --from=user-builder /etc/passwd /etc/passwd
 COPY --from=user-builder /etc/group /etc/group
