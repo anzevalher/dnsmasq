@@ -3,7 +3,7 @@ FROM debian:9.8-slim AS dnsmasq-builder
 RUN dpkg --add-architecture armel \
  && apt-get update \
  && apt-get -y install git make libc6-dev:armel gcc-arm-linux-gnueabi \
- && git clone -b v2.78 git://thekelleys.org.uk/dnsmasq.git /dnsmasq \
+ && git clone -b v2.79rc1 git://thekelleys.org.uk/dnsmasq.git /dnsmasq \
  && cd /dnsmasq/ \
  && CC=arm-linux-gnueabi-gcc make install \
  && cp /dnsmasq/dnsmasq.conf.example /etc/dnsmasq.conf
