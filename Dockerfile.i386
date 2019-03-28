@@ -3,7 +3,7 @@ FROM debian:9.8-slim AS dnsmasq-builder
 RUN dpkg --add-architecture i386 \
  && apt-get update \
  && apt-get -y install git make libc6-dev:i386 gcc:i386 \
- && git clone -b v2.80rc1 git://thekelleys.org.uk/dnsmasq.git /dnsmasq \
+ && git clone -b v2.80 git://thekelleys.org.uk/dnsmasq.git /dnsmasq \
  && cd /dnsmasq/ \
  && CC=gcc make install \
  && cp /dnsmasq/dnsmasq.conf.example /etc/dnsmasq.conf
